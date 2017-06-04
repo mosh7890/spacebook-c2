@@ -1,0 +1,8 @@
+p {
+    /*border: 2px solid black;*/
+    font-size: 24px;
+}
+
+* {
+    box-sizing: border-box;
+}
