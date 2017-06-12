@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <title></title>
 </head>
+
 <body>
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
@@ -18,18 +20,38 @@
 
       <form>
         <h3>Add a New Post</h3>
-
         <div class="form-group">
           <input type="text" id="post-name" class="form-control" placeholder="Post Text">
-          </input>
+          <button class="btn btn-primary add-post" type="button">Post</button>
         </div>
-
-        <button class="btn btn-primary add-post" type="button">Post</button>
       </form>
 
     </div>
   </div>
 
+  <script id="new-post" type="text/x-handlebars-template">
+    <div class="post" data-id="{{ id }}">
+      <a href="#" class="remove">Remove</a> <a href="#" class="show-comments">Comments</a> {{ text }}
+  </script>
+
+  <script id="new-comment" type="text/x-handlebars-template">
+    <div class="comments-container">
+      <input type="text" class="comment-name">
+      <button class="btn btn-primary add-comment">Post Comment</button>
+      <div class="comments"></div>
+    </div>
+    </div>
+  </script>
+
+  <script id="new-commentholder" type="text/x-handlebars-template">
+  <div class = commentholder data-id="{{ id }}">
+   {{comment}}
+   <button class="btn btn-secondary delete-comment">Delete Comment</button><br>
+  </div>
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.js"></script>
   <script src="main.js"></script>
 </body>
+
 </html>
