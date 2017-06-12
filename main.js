@@ -1,29 +1,13 @@
 var SpacebookApp = function () {
   // dummy data
-  var posts = [
-    {text: "Hello world 1", comments:[
-      { text: "Man, this is a comment!"},
-      { text: "Man, this is a comment!"},
-      { text: "Man, this is a comment!"}
-    ]},
-    {text: "Hello world 2", comments:[
-      { text: "Man, this is a comment!"},
-      { text: "Man, this is a comment!"},
-      { text: "Man, this is a comment!"}
-    ]},
-    {text: "Hello world 3", comments:[
-      { text: "Man, this is a comment!"},
-      { text: "Man, this is a comment!"},
-      { text: "Man, this is a comment!"}
-    ]}
-  ];
+  var STORAGE_ID = 'spacebook';
 
   // variable for storing our posts div
   var $posts = $('.posts');
 
   // build a single post object and push it to array
   var createPost = function (text) {
-    posts.push({ text: text, comments: []});
+    posts.push({ text: text, comments: [] });
   };
 
   // Empty all the posts, then add them from the posts array along with our
@@ -35,8 +19,8 @@ var SpacebookApp = function () {
       var post = posts[i];
 
       var commentsContainer = '<div class="comments-container">' + '<div class=comments-list></div>' +
-      '<input type="text" class="comment-name">' +
-      '<button class="btn btn-primary add-comment">Post Comment</button> </div>';
+        '<input type="text" class="comment-name">' +
+        '<button class="btn btn-primary add-comment">Post Comment</button> </div>';
 
       $posts.append('<div class="post">'
         + '<a href="#" class="remove">remove</a> ' + '<a href="#" class="show-comments">comments</a> ' + post.text +
@@ -63,7 +47,7 @@ var SpacebookApp = function () {
 
         // append the comment to the post we wanted to comment on
         $post.find('.comments-list').append(
-          '<div class="comment">' + comment.text + 
+          '<div class="comment">' + comment.text +
           '<button class="btn btn-danger remove-comment">Remove Comment</button>' +
           '</div>'
         );
@@ -109,6 +93,16 @@ var SpacebookApp = function () {
     posts[postIndex].comments.splice(commentIndex, 1);
   };
 
+  var saveToLocalStorage = function () {
+    localStorage.setItem(STORAGE_ID, JSON.stringify(posts));
+  }
+
+  var getFromLocalStorage = function () {
+    return JSON.parse(localStorage.getItem(STORAGE_ID) || '[]');
+  }
+
+  var posts = getFromLocalStorage();
+
   return {
     createPost: createPost,
     renderPosts: renderPosts,
@@ -117,7 +111,9 @@ var SpacebookApp = function () {
     createComment: createComment,
     renderComments: renderComments,
     removeComment: removeComment,
-    toggleComments: toggleComments
+    toggleComments: toggleComments,
+    saveToLocalStorage: saveToLocalStorage,
+    getFromLocalStorage: getFromLocalStorage
   };
 };
 
@@ -135,10 +131,12 @@ $('.add-post').on('click', function (e) {
   app.createPost(text);
   app.renderPosts();
   app.renderComments();
+  app.saveToLocalStorage();
 });
 
 $('.posts').on('click', '.remove', function () {
   app.removePost(this);
+  app.saveToLocalStorage();
 });
 
 $('.posts').on('click', '.show-comments', function () {
@@ -153,8 +151,10 @@ $('.posts').on('click', '.add-comment', function () {
 
   app.createComment(text, postIndex);
   app.renderComments();
+  app.saveToLocalStorage();
 });
 
 $('.posts').on('click', '.remove-comment', function () {
   app.removeComment(this);
+  app.saveToLocalStorage();
 });
